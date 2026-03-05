@@ -92,8 +92,18 @@ this endpoint represent a mapping between our app and the service external capac
   "service": "github"
 }
 
-***each new service needs a mapping***
+***each new service needs a mapping that fits the manifest***
 
 from that, the middleware can intercept the traffic and extract logs, block request if the permission or policies are not ok.
 
 this is all log in the logs table 
+
+# What should be done next
+
+1) With more time I would have take time to better architecture and design m middleware for a clearer vision of the data that transition. 
+probably isolating the middleware in a separate backend to have a seemless integration with external client
+something based on the domain name or something like that
+
+2) make the front actually followup the API and think of a clean agent configuration UX
+
+3) tests 
