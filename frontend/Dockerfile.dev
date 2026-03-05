@@ -1,0 +1,29 @@
+# my-frontend-app/Dockerfile
+# Use the official Node.js 20 LTS image for development
+FROM node:20-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json (if exists)
+# to install dependencies efficiently by leveraging Docker's cache
+COPY ./app/package.json ./
+COPY ./app/package-lock.json ./ 
+
+# Install dependencies
+RUN npm install --legacy-peer-deps
+
+# Copy the rest of the application code
+# .dockerignore should be used to exclude node_modules, .next, etc.
+COPY ./app .
+
+# Expose the port Next.js runs on in development
+EXPOSE 3000
+
+# Set environment variables for the Next.js app
+# NEXT_PUBLIC_API_URL should point to your backend service within the Docker network
+ENV NEXT_PUBLIC_API_URL=http://backend:8000
+ENV NODE_ENV=development
+
+# Command to run the Next.js development server
+CMD ["npm", "run", "dev"]

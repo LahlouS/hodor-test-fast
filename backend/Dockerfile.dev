@@ -1,0 +1,18 @@
+FROM python:3.12.11-bullseye
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies (for psycopg2, if used, and general compatibility)
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY . .
+
+EXPOSE 8000
+
+# Copy requirements if you have it (optional; otherwise use below to install manually)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt

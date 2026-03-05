@@ -1,0 +1,60 @@
+services:
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000" 
+    volumes:
+      - ./frontend/app:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      # This hostname 'backend' will resolve to the backend container's IP within the Docker network
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NODE_ENV: development
+    depends_on:
+      - backend
+  backend:
+    image: backend_image
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8000:8000
+    env_file:
+    - ${BACKEND_ENV_FILE}
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    depends_on:
+      - postgres
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  
+  postgres:
+    container_name: container-pg
+    image: pgvector/pgvector:pg17
+    hostname: localhost
+    ports:
+      - "5432:5432"
+    env_file:
+      - ${DATABASE_ENV_FILE}
+    volumes:
+      - ./database/storage/postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: container-pgadmin
+    image: dpage/pgadmin4:9.2
+    depends_on:
+      - postgres
+    ports:
+      - "4000:80"
+    env_file:
+      - ${DATABASE_ENV_FILE}
+    volumes:
+      - ./database/storage/pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
