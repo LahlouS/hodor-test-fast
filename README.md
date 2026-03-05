@@ -107,3 +107,5 @@ something based on the domain name or something like that
 2) make the front actually followup the API and think of a clean agent configuration UX
 
 3) tests 
+
+4) define a better third party service integration strategie, but I think the "manifest" kind of strategie is the right direction to ease the integration job and make it as agnostic as possible  
