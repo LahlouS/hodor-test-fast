@@ -52,11 +52,16 @@ the technical stack is the following:
 - NextJS: the client interface to create and configure you agents endpoint.
 
 
+![archi and stack](image-1.png)
+
+
 # What the idea ?
 
 the workflow is implemented as following:
 
-the API can be break down in two pieces: the logic router and the middleware router.
+the API can be break down in three pieces: the auth, the logic and the router and the middleware router.
+
+![api routes](image-2.png)
 
 the logic router encapsulate all the routes that allow you to configure your agent.
 an agent has a name, a status and some attached services. for each attached service you can manage the three permissions:
